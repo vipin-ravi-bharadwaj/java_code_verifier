@@ -15,6 +15,7 @@ def parse_args():
 
 def run_jbmc(java_file_path):
     try:
+        print(f"Running JBMC on {java_file_path}...")
         result = subprocess.run(["jbmc", java_file_path, "--trace"], capture_output=True, text=True)
         return result.stdout
     except Exception as e:
@@ -28,8 +29,11 @@ def extract_null_pointer_error_details(jbmc_output):
 
 
     if matches:
+        print("Null Pointer Exception detected!")
         variable_name = re.search(r"(?:\!\(\(struct java.lang.Object \*\)anonlocal::1)(\w*)", jbmc_output)
         return {'variable': variable_name.group(1)}
+    else:
+        print("No null pointer exception detected")
     return None
 
 
@@ -51,9 +55,11 @@ def extract_divide_by_zero_error_details(jbmc_output):
     matches = re.search(pattern, jbmc_output)
 
     if matches:
+        print("Divide by Zero Exception detected!")
         variable_name = re.search(r"(?:anonlocal::2)(\w*)", jbmc_output)
         return { 'variable': variable_name.group(1) }
-    
+    else:
+        print("No divide by zero exception detected")
     return None
 
 
@@ -75,11 +81,12 @@ def extract_array_index_out_of_bounds_details(jbmc_output):
     matches = re.search(pattern, jbmc_output)
 
     if matches:
+        print("Array Index Out of Bounds Exception detected!")
         variable_name = re.search(r"(?:\(\(struct java::array\[reference\] \*\)arg0a\)->length < \(\(struct java::array\[int\] \*\)anonlocal::2)(\w*)", jbmc_output)
-        
         array_size = random.randint(1, 10)
-
-        return {'variable': variable_name, 'index': array_size, 'array_size': array_size+1}
+        return {'variable': variable_name, 'index': array_size+1, 'array_size': array_size}
+    else:
+        print("No array index out of bounds exception detected")
     return None
 
 
@@ -99,14 +106,17 @@ public class ArrayBoundsException {{
 
 
 def write_code_to_file(code, file_name):
+    print(f"Generating counterexample - {file_name}")
     with open(file_name, 'w') as file:
         file.write(code)
 
 
 def main(java_file_path):
     jbmc_output = run_jbmc(java_file_path)
+
     if jbmc_output:
-        print(jbmc_output)
+        print("Received JBMC output")
+
         null_pointer_details = extract_null_pointer_error_details(jbmc_output)
         divide_by_zero_details = extract_divide_by_zero_error_details(jbmc_output)
         array_bounds_details = extract_array_index_out_of_bounds_details(jbmc_output)
@@ -114,22 +124,22 @@ def main(java_file_path):
         # Generate Java code for each error type if detected
 
         if "VERIFICATION FAILED" not in jbmc_output:
-            return "No errors found, verification successful."\
+            return "No errors found, verification successful."
 
         if null_pointer_details:
             java_code_null_pointer = generate_null_pointer_exception_code(null_pointer_details)
             write_code_to_file(java_code_null_pointer, "NullPointerException.java")
-            return "Generated Java Code for Null Pointer Exception\n"
+            return
 
         if divide_by_zero_details:
             java_code_divide_by_zero = generate_divide_by_zero_exception_code(divide_by_zero_details)
             write_code_to_file(java_code_divide_by_zero, "DivideByZeroException.java")
-            return "Generated Java Code for Divide By Zero Exception:\n"
+            return
 
         if array_bounds_details:
             java_code_array_bounds = generate_array_index_out_of_bounds_exception_code(array_bounds_details)
             write_code_to_file(java_code_array_bounds, "ArrayBoundsException.java")
-            return "Generated Java Code for Array Index Out of Bounds Exception:\n"
+            return
 
     else:
         return "Unknown"
@@ -137,5 +147,13 @@ def main(java_file_path):
 
 if __name__ == "__main__":
     options = parse_args()
-    output = main(options.file)
-    print(output)
+    print("Reading file...")
+    if(options.file):
+        print(f"Analyzing {options.file}...")
+        main(options.file)
+    else:
+        print("No file provided. Exiting...")
+
+
+# Steps to print
+# [analysing code, running jbmc, parsing output, show error, generating code, writing code to file]
