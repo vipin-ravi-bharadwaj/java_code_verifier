@@ -42,7 +42,10 @@ def extract_null_pointer_error_details(jbmc_output):
 
     if matches:
         variable_name = re.search(r"(?:\!\(\(struct java.lang.Object \*\)anonlocal::1)(\w*)", jbmc_output)
-        return { 'hasError': True, 'message': "Null Pointer Exception detected!", 'variable': variable_name.group(1) }
+        if variable_name:
+            return { 'hasError': True, 'message': "Null Pointer Exception detected!", 'variable': variable_name.group(1) }
+        else:
+            return { 'hasError': False, 'message': "No null pointer exception detected" }
     else:
         return { 'hasError': False, 'message': "No null pointer exception detected" }
 
