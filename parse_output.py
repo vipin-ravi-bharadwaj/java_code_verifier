@@ -11,12 +11,19 @@ def parse_args():
     parser.add_option("-f", "--file", dest="file", help="Path to the Java file to analyze")
     (options, args) = parser.parse_args()
     return options
+    
+
+def convert_java_to_class(java_file_path):
+    print(f"Converting {java_file_path} to class file...")
+    subprocess.run(["javac", java_file_path], capture_output=True, text=True)
 
 
 def run_jbmc(java_file_path):
+    convert_java_to_class(java_file_path)
     try:
-        print(f"Running JBMC on {java_file_path}...")
-        result = subprocess.run(["jbmc", java_file_path, "--trace"], capture_output=True, text=True)
+        class_file_path = java_file_path.replace(".java", "")
+        print(f"Running JBMC on {class_file_path}...")
+        result = subprocess.run(["jbmc", class_file_path, "--trace"], capture_output=True, text=True)
         return result.stdout
     except Exception as e:
         print(f"Error running JBMC: {e}")
@@ -31,10 +38,9 @@ def extract_null_pointer_error_details(jbmc_output):
     if matches:
         print("Null Pointer Exception detected!")
         variable_name = re.search(r"(?:\!\(\(struct java.lang.Object \*\)anonlocal::1)(\w*)", jbmc_output)
-        return {'variable': variable_name.group(1)}
+        return { 'hasError': True, 'variable': variable_name.group(1) }
     else:
-        print("No null pointer exception detected")
-    return None
+        return { 'hasError': False, 'message': "No null pointer exception detected" }
 
 
 def generate_null_pointer_exception_code(error_details):
@@ -57,10 +63,9 @@ def extract_divide_by_zero_error_details(jbmc_output):
     if matches:
         print("Divide by Zero Exception detected!")
         variable_name = re.search(r"(?:anonlocal::2)(\w*)", jbmc_output)
-        return { 'variable': variable_name.group(1) }
+        return { 'hasError': True, 'variable': variable_name.group(1) }
     else:
-        print("No divide by zero exception detected")
-    return None
+        return { 'hasError': False, 'message': "No divide by zero exception detected" }
 
 
 def generate_divide_by_zero_exception_code(error_details):
@@ -84,10 +89,10 @@ def extract_array_index_out_of_bounds_details(jbmc_output):
         print("Array Index Out of Bounds Exception detected!")
         variable_name = re.search(r"(?:\(\(struct java::array\[reference\] \*\)arg0a\)->length < \(\(struct java::array\[int\] \*\)anonlocal::2)(\w*)", jbmc_output)
         array_size = random.randint(1, 10)
-        return {'variable': variable_name, 'index': array_size+1, 'array_size': array_size}
+        return { 'hasError': True, 'variable': variable_name, 'index': array_size+1, 'array_size': array_size }
     else:
-        print("No array index out of bounds exception detected")
-    return None
+        return { 'hasError': False, 'message': "No array index out of bounds exception detected" }
+
 
 
 def generate_array_index_out_of_bounds_exception_code(error_details):
@@ -126,17 +131,17 @@ def main(java_file_path):
         if "VERIFICATION FAILED" not in jbmc_output:
             return "No errors found, verification successful."
 
-        if null_pointer_details:
+        if null_pointer_details['hasError']:
             java_code_null_pointer = generate_null_pointer_exception_code(null_pointer_details)
             write_code_to_file(java_code_null_pointer, "NullPointerException.java")
             return
 
-        if divide_by_zero_details:
+        if divide_by_zero_details['hasError']:
             java_code_divide_by_zero = generate_divide_by_zero_exception_code(divide_by_zero_details)
             write_code_to_file(java_code_divide_by_zero, "DivideByZeroException.java")
             return
 
-        if array_bounds_details:
+        if array_bounds_details['hasError']:
             java_code_array_bounds = generate_array_index_out_of_bounds_exception_code(array_bounds_details)
             write_code_to_file(java_code_array_bounds, "ArrayBoundsException.java")
             return
@@ -153,7 +158,3 @@ if __name__ == "__main__":
         main(options.file)
     else:
         print("No file provided. Exiting...")
-
-
-# Steps to print
-# [analysing code, running jbmc, parsing output, show error, generating code, writing code to file]
