@@ -4,32 +4,48 @@ import subprocess
 import re
 import optparse
 import random
+import os
+
 
 def parse_args():
     parser = optparse.OptionParser()
     parser.add_option("-f", "--file", dest="file", help="Path to the Java file to analyze")
+    parser.add_option("-p", "--print-statements", dest="print_output", help="To print the steps")
     parser.add_option("-b", "--benchmark", dest="benchmark", help="To run the benchmark")
     (options, args) = parser.parse_args()
+
+    if options.benchmark or not options.print_output:
+        options.print_output = None
+
     return options
+    
+
+def print_statements(should_print, message):
+    if should_print:
+        print(message)
 
 
-def convert_java_to_class(java_file_path):
-    print(f"Converting {java_file_path} to class file...")
+def convert_java_to_class(java_file_path, should_print):
+    print_statements(should_print, f"Converting {java_file_path} to class file...")
     subprocess.run(["javac", java_file_path], capture_output=True, text=True)
 
 
-def run_jbmc(java_file_path):
-    convert_java_to_class(java_file_path)
-    print(f"Running JBMC on {java_file_path}...")
-    class_file_path = java_file_path.replace(".java", "")
-    result = subprocess.run(["jbmc", class_file_path, "--trace"], capture_output=True, text=True)
-    return result.stdout
-
-
-def run_jbmc_on_jar(jar_file_path):
+def run_jbmc(java_file_path, should_print):
+    convert_java_to_class(java_file_path, should_print)
     try:
-        print(f"Running JBMC on {jar_file_path}...")
-        result = subprocess.run(["jbmc", "-jar", jar_file_path, "--main-class", "Main", "--unwind", "10", "--trace"], capture_output=True, text=True)
+        class_file_path = java_file_path.replace(".java", "")
+        print_statements(should_print, f"Running JBMC on {class_file_path}...")
+        result = subprocess.run(["jbmc", class_file_path, "--trace", "--unwind", "5"], capture_output=True, text=True, timeout=1)
+        return result.stdout
+    except Exception as e:
+        print(f"Error running JBMC: {e}")
+        return None
+    
+
+def run_jbmc_on_jar(jar_file_path, should_print):
+    try:
+        print_statements(should_print, f"Running JBMC on {jar_file_path}...")
+        result = subprocess.run(["jbmc", "-jar", jar_file_path, "--main-class", "Main", "--unwind", "5", "--trace"], capture_output=True, text=True, timeout=1)
         return result.stdout
     except Exception as e:
         print(f"Error running JBMC: {e}")
@@ -45,7 +61,7 @@ def extract_null_pointer_error_details(jbmc_output):
         if variable_name:
             return { 'hasError': True, 'message': "Null Pointer Exception detected!", 'variable': variable_name.group(1) }
         else:
-            return { 'hasError': False, 'message': "No null pointer exception detected" }
+            return { 'hasError': True, 'message': "No null pointer exception detected" }    
     else:
         return { 'hasError': False, 'message': "No null pointer exception detected" }
 
@@ -64,7 +80,7 @@ public class NullPointerException {{
 
 
 def extract_divide_by_zero_error_details(jbmc_output):
-    pattern = r'Denominator should be nonzero'
+    pattern = r'Denominator should be nonzero: FAILURE'
     matches = re.search(pattern, jbmc_output)
 
     if matches:
@@ -72,7 +88,7 @@ def extract_divide_by_zero_error_details(jbmc_output):
         if variable_name:
             return { 'hasError': True, 'message': 'Divide by Zero Exception detected!', 'variable': variable_name.group(1) }
         else:
-            return { 'hasError': False, 'message': "No divide by zero exception detected" }
+            return { 'hasError': True, 'message': "No divide by zero exception detected" }
     else:
         return { 'hasError': False, 'message': "No divide by zero exception detected" }
 
@@ -91,13 +107,13 @@ public class DivideByZeroException {{
 
 
 def extract_array_index_out_of_bounds_details(jbmc_output):
-    pattern = r'Array index should be < length: FAILURE'
+    pattern = r'Array index should be < length'
     matches = re.search(pattern, jbmc_output)
 
     if matches:
         variable_name = re.search(r"(?:\(\(struct java::array\[reference\] \*\)arg0a\)->length < \(\(struct java::array\[int\] \*\)anonlocal::2)(\w*)", jbmc_output)
         array_size = random.randint(1, 10)
-        return { 'hasError': True, 'message': "Array Index Out of Bounds Exception detected!", 'variable': variable_name, 'index': array_size+1, 'array_size': array_size }
+        return { 'hasError': True, 'variable': variable_name, 'index': array_size+1, 'array_size': array_size , 'error': 'Array Index Out of Bounds Exception' }
     else:
         return { 'hasError': False, 'message': "No array index out of bounds exception detected" }
 
@@ -118,62 +134,76 @@ public class ArrayBoundsException {{
 
 
 def write_code_to_file(code, file_name):
-    print(f"Generating counterexample - {file_name}")
     with open(file_name, 'w') as file:
         file.write(code)
 
 
-def main(java_file_path, benchmaring_mode=False):
-    if(benchmaring_mode):
-        jbmc_output = run_jbmc_on_jar(java_file_path)
+def main(java_file_path, benchmarking, should_print):
+    jbmc_output = None
+
+    if(benchmarking):
+        jbmc_output = run_jbmc_on_jar(java_file_path, should_print)
     else:
-        jbmc_output = run_jbmc(java_file_path)
+        jbmc_output = run_jbmc(java_file_path, should_print)
 
     benchmark_object = { 'hasError': None, 'message': "No errors found" }
 
     if jbmc_output:
-        print("Received JBMC output", jbmc_output)
+        print_statements(should_print, "Received JBMC output")
 
-        if "VERIFICATION FAILED" not in jbmc_output:
+        null_pointer_details = extract_null_pointer_error_details(jbmc_output)
+        divide_by_zero_details = extract_divide_by_zero_error_details(jbmc_output)
+        array_bounds_details = extract_array_index_out_of_bounds_details(jbmc_output)
+
+        error_detected = False
+
+        if "VERIFICATION SUCCESSFUL" in jbmc_output:
             benchmark_object["message"] = "No errors found, verification successful."
             benchmark_object["hasError"] = False
 
         else:
-            error_detected = False
-            for error_extract_func, error_generate_func in [
-                (extract_null_pointer_error_details, generate_null_pointer_exception_code),
-                (extract_divide_by_zero_error_details, generate_divide_by_zero_exception_code),
-                (extract_array_index_out_of_bounds_details, generate_array_index_out_of_bounds_exception_code)
-            ]:
-                error_details = error_extract_func(jbmc_output)
+            if null_pointer_details['hasError']:
+                print_statements(should_print, "Null Pointer Exception detected!")
+                if null_pointer_details['variable'] is not None:
+                    java_code_null_pointer = generate_null_pointer_exception_code(null_pointer_details)
+                    write_code_to_file(java_code_null_pointer, "NullPointerException.java")
 
-                if error_details['hasError']:
-                    java_code = error_generate_func(error_details)
-                    file_name = java_file_path.replace(".java", "") + "Exception.java"
-                    write_code_to_file(java_code, file_name)
-                    error_detected = True
-                    benchmark_object["hasError"] = False
-                    benchmark_object["message"] = error_details['message']
-                    benchmark_object["fileName"] = file_name
-                    break
+                null_pointer_details['file_name'] = "NullPointerException.java"
+                benchmark_object = null_pointer_details
+                error_detected = True
+            elif divide_by_zero_details['hasError']:
+                print_statements(should_print, "Divide by Zero Exception detected!")
+                if divide_by_zero_details['variable'] is not None:
+                    java_code_divide_by_zero = generate_divide_by_zero_exception_code(divide_by_zero_details)
+                    write_code_to_file(java_code_divide_by_zero, "DivideByZeroException.java")
+                    
+                divide_by_zero_details['file_name'] = "DivideByZeroException.java"
+                benchmark_object = divide_by_zero_details
+                error_detected = True
+            elif array_bounds_details['hasError']:
+                print_statements(should_print, "Array Index Out of Bounds Exception detected!")
+                java_code_array_bounds = generate_array_index_out_of_bounds_exception_code(array_bounds_details)
+                write_code_to_file(java_code_array_bounds, "ArrayBoundsException.java")  
+                array_bounds_details['file_name'] = "ArrayBoundsException.java"
+                benchmark_object = array_bounds_details  
+                error_detected = True  
 
             if not error_detected:
-                print("Unknown Error Detected")
-                benchmark_object["hasError"] = False
+                print_statements(should_print, "Unknown error detected!")
+                benchmark_object["hasError"] = True
                 benchmark_object["message"] = "Unknown error detected"
                 benchmark_object["unknown"] = True
-    else:
-        benchmark_object["message"] = "No output received from JBMC"
-        benchmark_object["hasError"] = 'Unknown'
 
-    print(benchmark_object)
-    return benchmark_object
-
+    if(benchmarking):
+        print(benchmark_object)
+        return benchmark_object
+    
 
 if __name__ == "__main__":
     options = parse_args()
-    if options.file:
-        print(f"Analyzing {options.file}...")
-        main(options.file, options.benchmark,)
+    print("Reading file...")
+    if(options.file):
+        print_statements(options.print_output, "Analyzing file...")
+        main(options.file, options.benchmark, options.print_output)
     else:
-        print("Required files not provided. Exiting...")
+        print("No file provided. Exiting...")
