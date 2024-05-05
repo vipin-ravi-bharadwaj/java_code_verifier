@@ -24,9 +24,16 @@ def read_yaml_as_text(yaml_file):
     return {'properties': [{'expected_verdict': expected_verdict}]}
 
 
+def convert_java_to_class(java_file_path):
+    print(f"Converting {java_file_path} to class file...")
+    subprocess.run(["javac", java_file_path], capture_output=True, text=True)
+
+
 def run_jbmc(java_file_path):
+    convert_java_to_class(java_file_path)
     print(f"Running JBMC on {java_file_path}...")
-    result = subprocess.run(["jbmc", java_file_path, "--trace"], capture_output=True, text=True)
+    class_file_path = java_file_path.replace(".java", "")
+    result = subprocess.run(["jbmc", class_file_path, "--trace"], capture_output=True, text=True)
     return result.stdout
 
 
@@ -134,7 +141,7 @@ def main(java_file_path, yaml_file_path):
             error_details = error_extract_func(jbmc_output)
             if error_details['hasError']:
                 java_code = error_generate_func(error_details)
-                file_name = java_file_path + "Exception.java"
+                file_name = java_file_path.replace(".java", "") + "Exception.java"
                 write_code_to_file(java_code, file_name)
                 error_detected = True
                 break
