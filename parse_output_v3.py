@@ -4,6 +4,7 @@ import subprocess
 import re
 import optparse
 import random
+import os
 
 
 def parse_args():
@@ -34,7 +35,7 @@ def run_jbmc(java_file_path, should_print):
     try:
         class_file_path = java_file_path.replace(".java", "")
         print_statements(should_print, f"Running JBMC on {class_file_path}...")
-        result = subprocess.run(["jbmc", class_file_path, "--unwind", "10", "--trace"], capture_output=True, text=True)
+        result = subprocess.run(["jbmc", class_file_path, "--stop-on-fail", "--trace"], capture_output=True, text=True)
         return result.stdout
     except Exception as e:
         print(f"Error running JBMC: {e}")
@@ -44,7 +45,7 @@ def run_jbmc(java_file_path, should_print):
 def run_jbmc_on_jar(jar_file_path, should_print):
     try:
         print_statements(should_print, f"Running JBMC on {jar_file_path}...")
-        result = subprocess.run(["jbmc", "-jar", jar_file_path, "--main-class", "Main", "--unwind", "10", "--trace"], capture_output=True, text=True)
+        result = subprocess.run(["jbmc", "-jar", jar_file_path, "--main-class", "Main", "--unwind", "10", "--stop-on-fail", "--trace"], capture_output=True, text=True)
         return result.stdout
     except Exception as e:
         print(f"Error running JBMC: {e}")
@@ -113,7 +114,6 @@ def extract_array_index_out_of_bounds_details(jbmc_output):
         return { 'hasError': False, 'message': "No array index out of bounds exception detected" }
 
 
-
 def generate_array_index_out_of_bounds_exception_code(error_details):
     variable_name = error_details['variable']
     index = error_details['index']
@@ -130,8 +130,11 @@ public class ArrayBoundsException {{
 
 
 def write_code_to_file(code, file_name):
-    print(f"Generating counterexample - {file_name}")
-    with open(file_name, 'w') as file:
+    counterexample_folder = "counterexample"
+    if not os.path.exists(counterexample_folder):
+        os.makedirs(counterexample_folder)
+    file_path = os.path.join(counterexample_folder, file_name)
+    with open(file_path, 'w') as file:
         file.write(code)
 
 
@@ -182,6 +185,7 @@ def main(java_file_path, benchmarking, should_print):
     if(benchmarking):
         print(benchmark_object)
         return benchmark_object
+    
 
 if __name__ == "__main__":
     options = parse_args()
