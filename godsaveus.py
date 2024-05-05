@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 import subprocess
 import json
@@ -20,7 +22,7 @@ def run_command_on_jars(directory, output_directory):
         results = []
 
         for jar_file in jar_files:
-            command = ['python3', 'jbmcsaveus.py', '-b', 'true', '-f', jar_file]
+            command = ['python3', 'java_code_analyser.py', '-b', 'True', '-f', jar_file]
             print(f"Running command on {jar_file}: {' '.join(command)}")
             start_time = time.time()
             result = subprocess.run(command, capture_output=True, text=True)
@@ -44,7 +46,7 @@ def run_command_on_jars(directory, output_directory):
                     if counter_example_generated is "Yes":
                         filename = hasFileName.group(1)
 
-                    if filename and os.path.exists(json_filename):
+                    if filename and os.path.exists(filename):
                         shutil.move(filename, os.path.join(output_directory, filename))
                         print(f"Moved {filename} to {output_directory}")
 
@@ -72,4 +74,3 @@ def run_command_on_jars(directory, output_directory):
 
 # Example usage
 run_command_on_jars('jbmc-regression/', 'path_to_output_directory')
-
