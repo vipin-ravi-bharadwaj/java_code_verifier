@@ -34,7 +34,17 @@ def run_jbmc(java_file_path, should_print):
     try:
         class_file_path = java_file_path.replace(".java", "")
         print_statements(should_print, f"Running JBMC on {class_file_path}...")
-        result = subprocess.run(["jbmc", class_file_path, "--trace"], capture_output=True, text=True)
+        result = subprocess.run(["jbmc", class_file_path, "--unwind", "10", "--trace"], capture_output=True, text=True)
+        return result.stdout
+    except Exception as e:
+        print(f"Error running JBMC: {e}")
+        return None
+    
+
+def run_jbmc_on_jar(jar_file_path, should_print):
+    try:
+        print_statements(should_print, f"Running JBMC on {jar_file_path}...")
+        result = subprocess.run(["jbmc", "-jar", jar_file_path, "--main-class", "Main", "--unwind", "10", "--trace"], capture_output=True, text=True)
         return result.stdout
     except Exception as e:
         print(f"Error running JBMC: {e}")
@@ -126,7 +136,12 @@ def write_code_to_file(code, file_name):
 
 
 def main(java_file_path, benchmarking, should_print):
-    jbmc_output = run_jbmc(java_file_path, should_print)
+    jbmc_output = None
+
+    if(benchmarking):
+        jbmc_output = run_jbmc_on_jar(java_file_path, should_print)
+    else:
+        jbmc_output = run_jbmc(java_file_path, should_print)
 
     benchmark_object = { 'hasError': False, 'message': "No errors found", 'unknown': False }
 
@@ -146,12 +161,14 @@ def main(java_file_path, benchmarking, should_print):
             write_code_to_file(java_code_null_pointer, "NullPointerException.java")
             null_pointer_details['file_name'] = "NullPointerException.java"
             benchmark_object = null_pointer_details
+
         elif divide_by_zero_details['hasError']:
             print_statements(should_print, "Divide by Zero Exception detected!")
             java_code_divide_by_zero = generate_divide_by_zero_exception_code(divide_by_zero_details)
             write_code_to_file(java_code_divide_by_zero, "DivideByZeroException.java")
             divide_by_zero_details['file_name'] = "DivideByZeroException.java"
             benchmark_object = divide_by_zero_details
+            
         elif array_bounds_details['hasError']:
             print_statements(should_print, "Array Index Out of Bounds Exception detected!")
             java_code_array_bounds = generate_array_index_out_of_bounds_exception_code(array_bounds_details)
