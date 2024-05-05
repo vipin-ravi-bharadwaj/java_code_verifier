@@ -69,7 +69,10 @@ def extract_divide_by_zero_error_details(jbmc_output):
 
     if matches:
         variable_name = re.search(r"(?:anonlocal::2)(\w*)", jbmc_output)
-        return { 'hasError': True, 'message': 'Divide by Zero Exception detected!', 'variable': variable_name.group(1) }
+        if variable_name:
+            return { 'hasError': True, 'message': 'Divide by Zero Exception detected!', 'variable': variable_name.group(1) }
+        else:
+            return { 'hasError': False, 'message': "No divide by zero exception detected" }
     else:
         return { 'hasError': False, 'message': "No divide by zero exception detected" }
 
