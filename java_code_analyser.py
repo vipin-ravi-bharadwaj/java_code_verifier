@@ -35,7 +35,7 @@ def run_jbmc(java_file_path, should_print):
     try:
         class_file_path = java_file_path.replace(".java", "")
         print_statements(should_print, f"Running JBMC on {class_file_path}...")
-        result = subprocess.run(["jbmc", class_file_path, "--trace", "--unwind", "100"], capture_output=True, text=True)
+        result = subprocess.run(["jbmc", class_file_path, "--trace", "--unwind", "100"], capture_output=True, text=True, timeout=5)
         return result.stdout
     except Exception as e:
         print(f"Error running JBMC: {e}")
@@ -45,7 +45,7 @@ def run_jbmc(java_file_path, should_print):
 def run_jbmc_on_jar(jar_file_path, should_print):
     try:
         print_statements(should_print, f"Running JBMC on {jar_file_path}...")
-        result = subprocess.run(["jbmc", "-jar", jar_file_path, "--main-class", "Main", "--unwind", "100", "--trace"], capture_output=True, text=True)
+        result = subprocess.run(["jbmc", "-jar", jar_file_path, "--main-class", "Main", "--unwind", "100", "--trace"], capture_output=True, text=True, timeout=5)
         return result.stdout
     except Exception as e:
         print(f"Error running JBMC: {e}")
@@ -163,8 +163,8 @@ public class {class_name} {{
 
 
 def write_code_to_file(code, file_name):
-    file_path = './counterexample/' + file_name
-    with open(file_path, 'w') as file:
+    # file_path = './counterexample/' + file_name
+    with open(file_name, 'w') as file:
         file.write(code)
 
 
