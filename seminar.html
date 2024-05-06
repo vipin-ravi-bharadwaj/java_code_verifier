@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Results</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Execution Results</h1>
+    <table id="resultsTable">
+        <tr>
+            <th>File Name</th>
+            <th>Expected Result</th>
+            <th>Actual Result</th>
+            <th>Counter Example Generated?</th>
+            <th>Time to Execute (s)</th>
+        </tr>
+    </table>
+
+    <script>
+        // Assuming the JSON data is defined in a variable data
+        var data = [
+    {
+        "File Name": "NullPointerException1_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.10"
+    },
+    {
+        "File Name": "cast1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "ArithmeticException1_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "exceptions10_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "StringIndexMethods01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StringBuilderInsertDelete03_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.34"
+    },
+    {
+        "File Name": "ArithmeticException5_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "StringValueOf05_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "instanceof2_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "StringBuilderInsertDelete02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.33"
+    },
+    {
+        "File Name": "instanceof3_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "NegativeArraySizeException1_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "StringMiscellaneous02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "instanceof4_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "exceptions7_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "ClassCastException3_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "aastore_aaload1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "Timeout",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "1.00"
+    },
+    {
+        "File Name": "StringBuilderConstructors02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "multinewarray_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "SubString02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "virtual2_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "swap1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "exceptions6_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "if_icmp1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StringCompare03_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StringCompare04_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "StringBuilderChars04_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.54"
+    },
+    {
+        "File Name": "StringValueOf10_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StringStartEnd01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "assert6_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StringBuilderChars06_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "bug-test-gen-119_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "Timeout",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "1.00"
+    },
+    {
+        "File Name": "exceptions14_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StringBuilderChars01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.13"
+    },
+    {
+        "File Name": "exceptions8_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StaticCharMethods05_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.10"
+    },
+    {
+        "File Name": "CharSequenceToString_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.14"
+    },
+    {
+        "File Name": "instanceof6_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "RegexMatches01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "Timeout",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "1.00"
+    },
+    {
+        "File Name": "virtual_function_unwinding_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "StringMiscellaneous03_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.42"
+    },
+    {
+        "File Name": "StringValueOf03_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "java_append_char_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "Timeout",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "1.00"
+    },
+    {
+        "File Name": "StringBuilderCapLen02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StringContains01_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "Timeout",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "1.00"
+    },
+    {
+        "File Name": "tableswitch1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StringCompare01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.10"
+    },
+    {
+        "File Name": "putstatic_getstatic1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "StringIndexMethods02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "Timeout",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "1.00"
+    },
+    {
+        "File Name": "store_load1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StringIndexMethods04_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.80"
+    },
+    {
+        "File Name": "Class_method1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "exceptions4_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "astore_aload1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.27"
+    },
+    {
+        "File Name": "iarith1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "assert5_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "StringConcatenation04_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "exceptions1_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "StringBuilderChars03_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.16"
+    },
+    {
+        "File Name": "CharSequenceBug_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "Timeout",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "1.00"
+    },
+    {
+        "File Name": "StringConstructors02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.19"
+    },
+    {
+        "File Name": "exceptions2_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.11"
+    },
+    {
+        "File Name": "StringMiscellaneous04_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.40"
+    },
+    {
+        "File Name": "classtest1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "ArrayIndexOutOfBoundsException2_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "boolean1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.11"
+    },
+    {
+        "File Name": "basic1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.15"
+    },
+    {
+        "File Name": "StaticCharMethods02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.24"
+    },
+    {
+        "File Name": "array1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "Timeout",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "1.00"
+    },
+    {
+        "File Name": "StringConcatenation01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.16"
+    },
+    {
+        "File Name": "BufferedReaderReadLine_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "Timeout",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "1.00"
+    },
+    {
+        "File Name": "arraylength1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.12"
+    },
+    {
+        "File Name": "exceptions15_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StringValueOf09_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "package1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StringValueOf06_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "TokenTest01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.66"
+    },
+    {
+        "File Name": "list1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.14"
+    },
+    {
+        "File Name": "exceptions3_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.10"
+    },
+    {
+        "File Name": "StringValueOf02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.17"
+    },
+    {
+        "File Name": "putfield_getfield1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.13"
+    },
+    {
+        "File Name": "interface1_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.12"
+    },
+    {
+        "File Name": "exceptions5_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "iarith2_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "exceptions18_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "bitwise1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StringBuilderChars02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "assert4_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StringMiscellaneous01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.82"
+    },
+    {
+        "File Name": "StringStartEnd02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.58"
+    },
+    {
+        "File Name": "StringCompare05_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "exceptions11_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "exceptions12_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "long1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "SubString03_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "lazyloading4_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "synchronized_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "Inheritance1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "TokenTest02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.30"
+    },
+    {
+        "File Name": "ClassCastException1_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "exceptions9_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "NullPointerException2_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "bug-test-gen-119-2_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.10"
+    },
+    {
+        "File Name": "StringValueOf01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.30"
+    },
+    {
+        "File Name": "instanceof1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "return1_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StringConstructors01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.11"
+    },
+    {
+        "File Name": "ifxx1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "ArrayIndexOutOfBoundsException3_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "array2_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "StringConcatenation02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "virtual1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "const1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StaticCharMethods06_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "RegexSubstitution03_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.21"
+    },
+    {
+        "File Name": "NegativeArraySizeException2_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "recursion2_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "NullPointerException4_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "lookupswitch1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "ClassCastException2_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "fcmpx_dcmpx1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StringContains02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "constructor1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StringIndexMethods05_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "exceptions16_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "Validate01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.15"
+    },
+    {
+        "File Name": "char1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "instanceof7_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StringBuilderCapLen01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.16"
+    },
+    {
+        "File Name": "if_acmp1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.12"
+    },
+    {
+        "File Name": "StringConcatenation03_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.18"
+    },
+    {
+        "File Name": "Validate02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.28"
+    },
+    {
+        "File Name": "enum1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.15"
+    },
+    {
+        "File Name": "StaticCharMethods04_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.46"
+    },
+    {
+        "File Name": "catch1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.13"
+    },
+    {
+        "File Name": "StringConstructors05_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "StringValueOf04_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "ArrayIndexOutOfBoundsException1_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "StringValueOf07_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.10"
+    },
+    {
+        "File Name": "StringBuilderCapLen03_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "ArithmeticException6_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "RegexSubstitution01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.60"
+    },
+    {
+        "File Name": "arrayread1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.05"
+    },
+    {
+        "File Name": "RegexMatches02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "Timeout",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "1.00"
+    },
+    {
+        "File Name": "NullPointerException3_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StringBuilderAppend01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "Timeout",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "1.00"
+    },
+    {
+        "File Name": "boolean2_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StringConstructors04_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StringBuilderCapLen04_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StringBuilderConstructors01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "return2_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "charArray_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.09"
+    },
+    {
+        "File Name": "SubString01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.10"
+    },
+    {
+        "File Name": "instanceof5_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "athrow1_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StringBuilderChars05_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "assert1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StaticCharMethods03_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "bug-test-gen-095_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "calc_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StringValueOf08_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "if_expr1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "instanceof8_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "overloading1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "assert2_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "uninitialised1_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StringConstructors03_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "StaticCharMethods01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.07"
+    },
+    {
+        "File Name": "virtual4_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "True",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StringBuilderInsertDelete01_true-assert.jar",
+        "Expected Result": "True",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.46"
+    },
+    {
+        "File Name": "StringCompare02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "StringStartEnd03_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "0.10"
+    },
+    {
+        "File Name": "assert3_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.06"
+    },
+    {
+        "File Name": "StringIndexMethods03_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "Timeout",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "1.00"
+    },
+    {
+        "File Name": "exceptions13_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "0.08"
+    },
+    {
+        "File Name": "StringBuilderAppend02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "Timeout",
+        "Counter Example Generated?": "No",
+        "Time to Execute (s)": "1.00"
+    },
+    {
+        "File Name": "RegexSubstitution02_false-assert.jar",
+        "Expected Result": "False",
+        "Actual Result": "False",
+        "Counter Example Generated?": "Yes",
+        "Time to Execute (s)": "1.03"
+    }
+        ];
+
+        var table = document.getElementById('resultsTable');
+
+        data.forEach(function(test) {
+            var row = table.insertRow(-1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            cell1.innerHTML = test["File Name"];
+            cell2.innerHTML = test["Expected Result"];
+            cell3.innerHTML = test["Actual Result"];
+            cell4.innerHTML = test["Counter Example Generated?"];
+            cell5.innerHTML = test["Time to Execute (s)"];
+        });
+    </script>
+</body>
+</html>
+
