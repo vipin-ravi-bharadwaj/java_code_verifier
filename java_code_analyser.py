@@ -69,7 +69,7 @@ def generate_null_pointer_exception_code(error_details, class_name):
 public class {class_name} {{
     public static void main(String[] args) {{
         Object {variable_name} = null;
-        {variable_name}.toString();
+        {variable_name}.toString(); //[Error Here]
     }}
 }}
 """
@@ -93,7 +93,7 @@ def generate_divide_by_zero_exception_code(error_details, class_name):
 public class {class_name} {{
     public static void main(String[] args) {{
         int {variable_name} = 0;
-        int result = 10 / {variable_name};
+        int result = 10 / {variable_name}; //[Error Here]
     }}
 }}
 """
@@ -120,7 +120,7 @@ def generate_array_index_out_of_bounds_exception_code(error_details, class_name)
 public class {class_name} {{
     public static void main(String[] args) {{
         int[] {variable_name} = new int[{array_size}];
-        int illegalAccess = {variable_name}[{index}]; 
+        int illegalAccess = {variable_name}[{index}]; //[Error Here]
     }}
 }}
 """
@@ -147,7 +147,7 @@ public class {class_name} {{
             Object obj = new Integer(100);
 
             // Attempting to cast it to String
-            String {error_details['variable']} = (String) obj;
+            String {error_details['variable']} = (String) obj; //[Error Here]
 
             // This line will not be reached if the cast fails
             System.out.println('Casting successful: ' + {error_details['variable']});
